@@ -1,0 +1,367 @@
+{
+  "audit": {
+    "rows": 17379,
+    "dates": 731,
+    "missing_cells": 0,
+    "duplicate_keys": 0,
+    "expected_hours": 17544,
+    "absent_hours": 165,
+    "sha256": "e03de4ee4ef4dc376ac6e04bf829673c6269e8eba5c60fa121640fa2f829504f"
+  },
+  "split_table": [
+    {
+      "fold": "1",
+      "train_end": "2011-05-26",
+      "validation_start": "2011-05-27",
+      "validation_end": "2011-10-19",
+      "train_n": "3410",
+      "validation_n": "3487"
+    },
+    {
+      "fold": "2",
+      "train_end": "2011-10-19",
+      "validation_start": "2011-10-20",
+      "validation_end": "2012-03-13",
+      "train_n": "6897",
+      "validation_n": "3492"
+    },
+    {
+      "fold": "3",
+      "train_end": "2012-03-13",
+      "validation_start": "2012-03-14",
+      "validation_end": "2012-08-06",
+      "train_n": "10389",
+      "validation_n": "3502"
+    }
+  ],
+  "train_n": 13891,
+  "test_n": 3488,
+  "train_end": "2012-08-06",
+  "test_start": "2012-08-07",
+  "test_end": "2012-12-31",
+  "selected": "Ridge",
+  "cv": [
+    {
+      "algorithm": "Forest",
+      "weather": false,
+      "parameter": 2,
+      "MAE": 91.56863954109063
+    },
+    {
+      "algorithm": "Forest",
+      "weather": false,
+      "parameter": 10,
+      "MAE": 94.35734780479545
+    },
+    {
+      "algorithm": "Forest",
+      "weather": true,
+      "parameter": 2,
+      "MAE": 73.10937782203577
+    },
+    {
+      "algorithm": "Forest",
+      "weather": true,
+      "parameter": 10,
+      "MAE": 82.32030214498401
+    },
+    {
+      "algorithm": "Ridge",
+      "weather": false,
+      "parameter": 1,
+      "MAE": 91.34948040802662
+    },
+    {
+      "algorithm": "Ridge",
+      "weather": false,
+      "parameter": 100,
+      "MAE": 98.95242957278738
+    },
+    {
+      "algorithm": "Ridge",
+      "weather": true,
+      "parameter": 1,
+      "MAE": 81.48023115013468
+    },
+    {
+      "algorithm": "Ridge",
+      "weather": true,
+      "parameter": 100,
+      "MAE": 89.4501433645439
+    }
+  ],
+  "metrics": [
+    {
+      "model": "Baseline",
+      "MAE": 101.33344010845234,
+      "RMSE": 145.50717429227177
+    },
+    {
+      "model": "Forest calendar",
+      "MAE": 67.19666582646191,
+      "RMSE": 109.58996318719103
+    },
+    {
+      "model": "Forest + weather",
+      "MAE": 55.278840134411915,
+      "RMSE": 83.18112331696214
+    },
+    {
+      "model": "Ridge calendar",
+      "MAE": 106.06528498908798,
+      "RMSE": 142.5011865185213
+    },
+    {
+      "model": "Ridge + weather",
+      "MAE": 100.29340714720527,
+      "RMSE": 135.59003534328713
+    }
+  ],
+  "comparisons": [
+    {
+      "algorithm": "Ridge",
+      "improvement": 5.7718778418827075,
+      "percent": 5.441816181869986,
+      "lower": 3.744597076856886,
+      "upper": 7.947137942068737
+    },
+    {
+      "algorithm": "Forest",
+      "improvement": 11.917825692049997,
+      "percent": 17.73573963152913,
+      "lower": 5.053402810910875,
+      "upper": 19.141379185471493
+    }
+  ],
+  "groups": {
+    "hr": [
+      {
+        "hr": 0,
+        "hours": 146,
+        "under_hours": 22,
+        "under_share": 0.150684931506849,
+        "conditional_shortfall": 33.90941380866698
+      },
+      {
+        "hr": 1,
+        "hours": 145,
+        "under_hours": 18,
+        "under_share": 0.124137931034483,
+        "conditional_shortfall": 21.499447643230653
+      },
+      {
+        "hr": 2,
+        "hours": 145,
+        "under_hours": 7,
+        "under_share": 0.048275862068966,
+        "conditional_shortfall": 21.20948883331871
+      },
+      {
+        "hr": 3,
+        "hours": 142,
+        "under_hours": 1,
+        "under_share": 0.007042253521127,
+        "conditional_shortfall": 9.142143777755336
+      },
+      {
+        "hr": 4,
+        "hours": 144,
+        "under_hours": 0,
+        "under_share": 0.0,
+        "conditional_shortfall": null
+      },
+      {
+        "hr": 5,
+        "hours": 145,
+        "under_hours": 0,
+        "under_share": 0.0,
+        "conditional_shortfall": null
+      },
+      {
+        "hr": 6,
+        "hours": 145,
+        "under_hours": 43,
+        "under_share": 0.296551724137931,
+        "conditional_shortfall": 15.797279930107903
+      },
+      {
+        "hr": 7,
+        "hours": 145,
+        "under_hours": 85,
+        "under_share": 0.586206896551724,
+        "conditional_shortfall": 164.195674466121
+      },
+      {
+        "hr": 8,
+        "hours": 145,
+        "under_hours": 90,
+        "under_share": 0.620689655172414,
+        "conditional_shortfall": 291.57958523000656
+      },
+      {
+        "hr": 9,
+        "hours": 145,
+        "under_hours": 97,
+        "under_share": 0.668965517241379,
+        "conditional_shortfall": 61.7741590305155
+      },
+      {
+        "hr": 10,
+        "hours": 145,
+        "under_hours": 42,
+        "under_share": 0.289655172413793,
+        "conditional_shortfall": 136.6567994316178
+      },
+      {
+        "hr": 11,
+        "hours": 145,
+        "under_hours": 50,
+        "under_share": 0.344827586206897,
+        "conditional_shortfall": 164.84964731416412
+      },
+      {
+        "hr": 12,
+        "hours": 145,
+        "under_hours": 71,
+        "under_share": 0.489655172413793,
+        "conditional_shortfall": 152.4726002735815
+      },
+      {
+        "hr": 13,
+        "hours": 146,
+        "under_hours": 62,
+        "under_share": 0.424657534246575,
+        "conditional_shortfall": 168.61343596640057
+      },
+      {
+        "hr": 14,
+        "hours": 146,
+        "under_hours": 54,
+        "under_share": 0.36986301369863,
+        "conditional_shortfall": 188.62613059706348
+      },
+      {
+        "hr": 15,
+        "hours": 146,
+        "under_hours": 68,
+        "under_share": 0.465753424657534,
+        "conditional_shortfall": 147.40787407010924
+      },
+      {
+        "hr": 16,
+        "hours": 146,
+        "under_hours": 114,
+        "under_share": 0.780821917808219,
+        "conditional_shortfall": 113.96347777767828
+      },
+      {
+        "hr": 17,
+        "hours": 146,
+        "under_hours": 104,
+        "under_share": 0.712328767123288,
+        "conditional_shortfall": 231.26103979097036
+      },
+      {
+        "hr": 18,
+        "hours": 146,
+        "under_hours": 98,
+        "under_share": 0.671232876712329,
+        "conditional_shortfall": 208.21045226297002
+      },
+      {
+        "hr": 19,
+        "hours": 146,
+        "under_hours": 90,
+        "under_share": 0.616438356164384,
+        "conditional_shortfall": 122.52465643881297
+      },
+      {
+        "hr": 20,
+        "hours": 146,
+        "under_hours": 69,
+        "under_share": 0.472602739726027,
+        "conditional_shortfall": 78.69077192292009
+      },
+      {
+        "hr": 21,
+        "hours": 146,
+        "under_hours": 55,
+        "under_share": 0.376712328767123,
+        "conditional_shortfall": 37.83552836239261
+      },
+      {
+        "hr": 22,
+        "hours": 146,
+        "under_hours": 27,
+        "under_share": 0.184931506849315,
+        "conditional_shortfall": 26.59853568315502
+      },
+      {
+        "hr": 23,
+        "hours": 146,
+        "under_hours": 18,
+        "under_share": 0.123287671232877,
+        "conditional_shortfall": 24.01970734318452
+      }
+    ],
+    "day_type": [
+      {
+        "day_type": "Holiday",
+        "hours": 119,
+        "under_hours": 32,
+        "under_share": 0.26890756302521,
+        "conditional_shortfall": 100.51886395008249
+      },
+      {
+        "day_type": "Weekend",
+        "hours": 1008,
+        "under_hours": 346,
+        "under_share": 0.343253968253968,
+        "conditional_shortfall": 169.70435368269614
+      },
+      {
+        "day_type": "Working day",
+        "hours": 2361,
+        "under_hours": 907,
+        "under_share": 0.384159254553155,
+        "conditional_shortfall": 131.0183349219868
+      }
+    ],
+    "weather": [
+      {
+        "weather": "Clear / partly cloudy",
+        "hours": 2168,
+        "under_hours": 866,
+        "under_share": 0.399446494464945,
+        "conditional_shortfall": 151.0672255687984
+      },
+      {
+        "weather": "Light rain / snow",
+        "hours": 238,
+        "under_hours": 42,
+        "under_share": 0.176470588235294,
+        "conditional_shortfall": 120.54737612967521
+      },
+      {
+        "weather": "Mist / cloudy",
+        "hours": 1082,
+        "under_hours": 377,
+        "under_share": 0.348428835489834,
+        "conditional_shortfall": 119.04703621971288
+      }
+    ]
+  },
+  "busy": {
+    "threshold": 413.0,
+    "n": 730,
+    "MAE": 213.56002485920015,
+    "under_share": 0.9780821917808219,
+    "conditional_shortfall": 217.72161154320918
+  },
+  "versions": {
+    "python": "3.11.16",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "sklearn": "1.9.1"
+  }
+}
