@@ -1,0 +1,346 @@
+---
+title: "Comparing Linear Regression Models for Housing Prices"
+author: "Shelia Howard"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### Introduction
+
+In this exercise, I use the Housing Prices dataset to build and evaluate regression models that infer Sale Price (`price`). I start with a simple linear regression using `area` to predict `price`, then build a multiple regression model with additional predictors. For each model, I interpret model fit statistics (R², adjusted R²) and calculate error metrics (MSE, RMSE). I also examine residual behavior using a residual plot and a Q-Q plot, and I use ANOVA to test whether the second model significantly improves model fit compared to the first.
+
+### Setup
+
+```{r setup, comment=""}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# Housekeeping
+rm(list = ls())
+
+# Libraries
+library(ggplot2)
+
+# Helper functions for metrics
+mse <- function(actual, predicted) {
+  mean((actual - predicted)^2, na.rm = TRUE)
+}
+
+rmse <- function(actual, predicted) {
+  sqrt(mse(actual, predicted))
+}
+
+```
+
+---
+
+### Load Data
+
+
+```{r dataload, comment=""}
+# Raw data location 
+url <- "https://raw.githubusercontent.com/bellevue-university/dsc520/master/assignments/version_two/10_11_week/week_10/Housing.csv"
+
+housing <- read.csv(url, stringsAsFactors = FALSE)
+
+# Quick inspection
+str(housing)
+summary(housing)
+
+```
+
+---
+
+### Transformations and modifications
+
+In this dataset, several variables are categorical even though they are represented as text (for example, `mainroad`, `guestroom`, `basement`, `hotwaterheating`, `airconditioning`, `prefarea`, and `furnishingstatus`). For regression, I convert these fields to factors so that R correctly treats them as categorical predictors and creates the appropriate indicator variables.
+
+I also check for missing values. If any were present, I would decide whether to remove incomplete rows or use an imputation strategy. In this dataset, I proceed with complete cases only if needed.
+
+
+```{r conversion, comment=""}
+
+# Convert categorical fields to factors (common in this dataset)
+cat_vars <- c("mainroad", "guestroom", "basement", "hotwaterheating",
+              "airconditioning", "prefarea", "furnishingstatus")
+
+for (v in cat_vars) {
+  if (v %in% names(housing)) {
+    housing[[v]] <- as.factor(housing[[v]])
+  }
+}
+
+# Check missingness
+colSums(is.na(housing))
+
+# If missing values exist, keep complete cases for modeling
+housing_model <- na.omit(housing)
+
+str(housing_model)
+
+```
+
+---
+
+### Correlation exploration (numeric variables)
+
+Correlation is most directly interpretable among numeric variables. I review correlations to understand which numeric predictors may have linear relationships with `price` and could reasonably contribute explanatory power in a multiple regression model.
+
+```{r correlation, comment=""}
+
+# Numeric-only correlation matrix
+num_cols <- sapply(housing_model, is.numeric)
+housing_num <- housing_model[, num_cols]
+
+cor_matrix <- cor(housing_num)
+round(cor_matrix, 3)
+
+```
+
+From the correlation matrix, `area` shows a positive association with `price`, supporting its use as the initial single-predictor model. Other numeric variables (for example, bathrooms, stories, and parking) also show relationships with price, which supports including them in the multiple regression model.
+
+---
+
+### Model 1: Simple linear regression (area -> price)
+
+##### **Fit the model**
+
+This first model answers the core question: how well does `area` alone infer `price`?
+
+```{r mod1, comment=""}
+model1 <- lm(price ~ area, data = housing_model)
+summary(model1)
+```
+
+
+---
+
+##### Model 1 performance metrics (R², adj R², MSE, RMSE)
+
+R² reflects the proportion of variance in `price` explained by `area`. Adjusted R² accounts for model complexity, but in a single-predictor model it will be close to R². RMSE and MSE quantify the typical prediction error magnitude (in the units of `price`).
+
+
+```{r mod1_metrics, comment=""}
+pred1 <- predict(model1, newdata = housing_model)
+actual <- housing_model$price
+
+mse1 <- mse(actual, pred1)
+rmse1 <- rmse(actual, pred1)
+
+r2_1 <- summary(model1)$r.squared
+adjr2_1 <- summary(model1)$adj.r.squared
+
+list(
+  R2 = r2_1,
+  Adj_R2 = adjr2_1,
+  MSE = mse1,
+  RMSE = rmse1
+)
+
+```
+
+##### Interpretation of Model 1 Summary
+
+The R² value from Model 1 indicates the proportion of total variance in sale price explained by area alone. Based on the summary output, R² = `r round(r2_1, 3)`. This means approximately `r round(r2_1 * 100, 1)`% of the variability in housing prices is explained solely by square footage.
+
+This level of explanatory power suggests that area is a meaningful but incomplete predictor of price. Because more than `r round((1 - r2_1) * 100, 1)`% of the variation remains unexplained, additional structural and location-based variables are likely influencing price.
+
+The adjusted R² (`r round(adjr2_1, 3)`) is nearly identical to R² because the model includes only one predictor. This confirms that the explanatory power is not artificially inflated by model complexity.
+
+The coefficient for `area` is statistically significant (p-value < .05, as shown in the summary table). This provides strong statistical evidence that area is positively associated with housing price.
+
+From a practical standpoint, the slope coefficient indicates the expected increase in sale price for each one-unit increase in area. If the slope estimate is `r round(coef(model1)["area"], 2)`, then for each additional unit of square footage, the predicted sale price increases by approximately that amount, holding all else constant. In real estate valuation, this represents a meaningful economic effect.
+
+The model’s F-statistic indicates that including property area significantly improved fit compared with an intercept-only model.
+
+---
+
+### Model 1 Residual Plot
+
+A residual plot helps me assess whether residuals appear randomly scattered around 0. Clear patterns (curvature, funnel shapes, or structure) suggest potential nonlinearity, heteroscedasticity, or omitted variables.
+
+```{r mod1_res_plot, comment=""}
+res1 <- residuals(model1)
+fitted1 <- fitted(model1)
+
+res_df1 <- data.frame(
+  fitted = fitted1,
+  residuals = res1
+)
+
+ggplot(res_df1, aes(x = fitted, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Model 1 Residual Plot",
+    x = "Fitted values (predicted price)",
+    y = "Residuals"
+  )
+
+```
+
+The residual diagnostics are used to assess the assumptions of linear regression, including linearity, independence, homoscedasticity, and normality of errors. While minor deviations appear in the tails, there is no strong evidence of severe model misspecification.
+
+---
+
+### Model 1 Q-Q plot (normality)
+
+The Q-Q plot compares residual quantiles to a normal distribution. If points generally follow the reference line, the normality assumption is more reasonable. Noticeable tail deviations or systematic curvature suggests departures from normality.
+
+```{r mod1_qq_plot, comment=""}
+qqnorm(res1, main = "Model 1 Q-Q Plot of Residuals")
+qqline(res1, lty = 2)
+
+```
+
+---
+
+### Model 2: Multiple linear regression (multiple predictors -> price)
+
+##### **Predictor selection rationale**
+
+For the second model, I include predictors that I expect to contribute explanatory value:
+- `area`: a direct measure of house size, commonly associated with higher sale price.
+- `bedrooms` and `bathrooms`: proxies for capacity and amenities, likely tied to value.
+- `stories`: reflects size/structure and sometimes neighborhood home type, potentially affecting price.
+- `parking`: an amenity that can add value, especially in denser areas.
+- `mainroad`, `guestroom`, `basement`, `hotwaterheating`, `airconditioning`, `prefarea`: categorical indicators of accessibility, features, and preferred-area location, all plausibly linked to price.
+- `furnishingstatus`: reflects included furnishings, which may raise the sale price.
+
+I treat these as additive predictors in a multiple regression framework.
+
+##### **Fit the model**
+
+```{r mod2, comment=""}
+model2 <- lm(
+  price ~ area + bedrooms + bathrooms + stories + parking +
+    mainroad + guestroom + basement + hotwaterheating +
+    airconditioning + prefarea + furnishingstatus,
+  data = housing_model
+)
+
+summary(model2)
+
+```
+
+##### Interpretation of Model 2 Summary 
+
+Based on the Model 2 summary output, the model explains a large share of variation in housing price. The R² is 0.6818, meaning the predictors collectively explain about 68.2% of the variance in price. The adjusted R² is 0.6740, which is only slightly lower than R², suggesting the added predictors are contributing real explanatory value rather than only inflating fit through model complexity.
+
+Looking at coefficient significance (p < .05), the statistically significant predictors in this model are: area, bathrooms, stories, parking, mainroadyes, guestroomyes, basementyes, hotwaterheatingyes, airconditioningyes, prefareayes, and furnishingstatusunfurnished. Each of these has evidence of an association with price after controlling for the other variables in the model.
+
+Because several predictors are categorical factors, coefficients such as mainroadyes represent the expected difference in price for “yes” relative to the reference category (typically “no”), holding the other variables constant.
+
+The predictors that are not statistically significant at the .05 level are: bedrooms, furnishingstatussemi-furnished, and the intercept. In particular, bedrooms is not significant once area and the other structural variables are included, which suggests bedroom count does not add much independent explanatory value beyond overall size and features.
+
+The lack of statistical significance for bedrooms likely reflects multicollinearity with area, as both variables measure aspects of house size. Once overall square footage is included, bedroom count adds limited independent explanatory value.
+
+From a practical standpoint, several coefficients are large in magnitude (for example, bathrooms, air conditioning, and preferred area), which suggests meaningful price differences associated with these features in this dataset. The overall F-statistic is 87.52 with p < 2.2e-16, indicating the model as a whole is statistically significant and performs substantially better than an intercept-only model.
+
+---
+
+### Model 2 performance metrics (R², adj R², MSE, RMSE)
+
+In a multiple regression, I focus more heavily on adjusted R² compared to R² because adjusted R² penalizes unnecessary predictors. I also compare RMSE and MSE to see if prediction errors shrink relative to Model 1.
+
+```{r mod2_metrics, comment=""}
+pred2 <- predict(model2, newdata = housing_model)
+
+mse2 <- mse(actual, pred2)
+rmse2 <- rmse(actual, pred2)
+
+r2_2 <- summary(model2)$r.squared
+adjr2_2 <- summary(model2)$adj.r.squared
+
+list(
+  R2 = r2_2,
+  Adj_R2 = adjr2_2,
+  MSE = mse2,
+  RMSE = rmse2
+)
+
+```
+
+The area-only model had an RMSE of `r format(round(rmse1), big.mark = ",", scientific = FALSE, trim = TRUE)` in the dataset’s recorded price units. The multiple regression model had an RMSE of `r format(round(rmse2), big.mark = ",", scientific = FALSE, trim = TRUE)`, approximately 33% lower. Both models were fitted and evaluated on the same 545 housing records. The lower RMSE shows that the multiple regression model fit the observed data better. Evaluating the models on held-out data would help determine how well they estimate prices for new properties.
+
+---
+
+### Model 2 residual plot
+
+With more predictors, I expect residuals to show less structure if the model captures more of the systematic variation in `price`. If I still see strong patterns, that suggests I may need transformations, interactions, or non-linear terms.
+
+```{r mod2_res_plot, comment=""}
+res2 <- residuals(model2)
+fitted2 <- fitted(model2)
+
+res_df2 <- data.frame(
+  fitted = fitted2,
+  residuals = res2
+)
+
+ggplot(res_df2, aes(x = fitted, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Model 2 Residual Plot",
+    x = "Fitted values (predicted price)",
+    y = "Residuals"
+  )
+
+```
+
+---
+
+
+### Model 2 Q-Q plot (normality)
+
+Even if residuals are not perfectly normal, approximate normality is helpful for inference (confidence intervals and p-values). I use the Q-Q plot as a visual diagnostic rather than expecting a perfect line.
+
+```{r mod2_qq_plot, comment=""}
+
+qqnorm(res2, main = "Model 2 Q-Q Plot of Residuals")
+qqline(res2, lty = 2)
+
+```
+
+---
+
+### Model comparison (Model 1 vs Model 2)
+
+##### **Compare metrics**
+
+```{r comparison, comment=""}
+comparison <- data.frame(
+  Model = c("Model 1: price ~ area", "Model 2: multiple predictors"),
+  R2 = c(r2_1, r2_2),
+  Adj_R2 = c(adjr2_1, adjr2_2),
+  MSE = c(mse1, mse2),
+  RMSE = c(rmse1, rmse2)
+)
+
+comparison
+
+```
+
+The ANOVA comparison tests whether the additional predictors in Model 2 significantly reduce residual variance compared to Model 1. A statistically significant p-value confirms that the expanded model provides a meaningful improvement in explanatory power beyond area alone.
+
+Because the models are nested, this test appropriately evaluates whether the additional predictors collectively improve model fit.
+
+---
+
+##### **ANOVA comparison (significance of improvement)**
+
+To confirm whether Model 2 provides a statistically significant improvement over Model 1, I use ANOVA to compare nested models. Because Model 1 is a subset of Model 2, this is an appropriate test. A significant p-value indicates the additional predictors in Model 2 improve model fit beyond what `area` alone explains.
+
+```{r anova, comment=""}
+
+anova(model1, model2)
+
+```
+
+---
+
+### Conclusion
+
+Property area alone explained about 29% of the variation in sale prices in this sample. Adding other property characteristics, including bathrooms, parking, and air conditioning, increased that figure to about 68%. The multiple regression model also had a lower RMSE on the observed records, and the nested-model ANOVA showed a statistically significant improvement in fit. An evaluation on held-out data would be needed to assess how well the models estimate sale prices for new properties.
+
+---

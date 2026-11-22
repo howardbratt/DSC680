@@ -1,0 +1,6 @@
+county_fips,state_abbr,county_name,population,cms_ed_visits,cms_inpatient_admissions,ed_visits_per_1000,inpatient_admissions_per_1000,diabetes_percent,obesity_percent,high_blood_pressure_percent,coronary_heart_disease_percent,stroke_percent,average_chronic_disease_burden_percent,chronic_disease_burden_category,aha_hospital_count,aha_staffed_beds,staffed_beds_per_1000,aha_ownership_type,aha_location_classification,high_utilization_region
+47065,TN,Hamilton County,374682,118450,29850,316.13,79.67,13.1,33.5,37.6,6.1,3.4,18.74,Lower,10,2280,6.09,Nonprofit,Urban,Yes
+47157,TN,Shelby County,916371,375000,68400,409.22,74.64,14.8,38.2,41.5,6.4,4.2,21.02,Moderate,14,4700,5.13,Government,Urban,Yes
+47037,TN,Davidson County,715884,182500,41200,254.93,57.55,12.6,32.4,36.8,5.6,3.1,18.1,Lower,12,3150,4.4,Nonprofit,Urban,No
+47093,TN,Knox County,500669,128700,35525,257.06,70.96,11.7,31.9,35.2,5.8,3.0,17.52,Lower,8,2420,4.83,Nonprofit,Urban,No
+47149,TN,Rutherford County,367101,96000,18900,261.51,51.48,10.9,34.1,34.7,5.2,2.9,17.56,Lower,5,1030,2.81,Nonprofit,Suburban,No
