@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shelia Howard’s data science portfolio, featuring applied machine learning and healthcare interoperability.">
+  <title>Shelia Howard | Data Science Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap bar">
+      <a class="identity" href="#main">Shelia Howard</a>
+      <nav aria-label="Main navigation">
+        <a href="#about">About</a><a href="#projects">Work / Projects</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="intro" id="about" aria-labelledby="about-heading">
+      <div class="wrap">
+        <p class="eyebrow">Data science portfolio</p>
+        <h1 id="about-heading">Data science for healthcare operations</h1>
+        <p class="lead">I’m Shelia Howard, a master’s student in data science with a background in healthcare software engineering and interoperability. I’m interested in how teams can use data and machine learning to make decisions they can review and explain.</p>
+        <a class="button" href="#featured">Explore the featured project</a>
+      </div>
+    </section>
+    <section class="wrap work" id="projects" aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Work / Projects</h2>
+      <article class="feature" id="featured" aria-labelledby="feature-heading">
+        <p class="eyebrow">Featured project · Advanced Uses of Generative AI</p>
+        <h3 id="feature-heading">Healthcare Data Mapping Assistant</h3>
+        <p>I built a Streamlit prototype that recommends where incoming demographic fields belong in a shared healthcare schema. It proposes a target for clear cases and sends ambiguous cases to an analyst. For example, it mapped a birth date to <code>date_of_birth</code> and flagged a combined full-name field for review.</p>
+        <div class="metrics">
+          <div><strong>41/48</strong><span>Correct targets after fine-tuning</span><small>Up from 4/48 with the original model</small></div>
+          <div><strong>48/48</strong><span>Responses met the JSON contract</span><small>Up from 7/48 with the original model</small></div>
+          <div><strong>9/9</strong><span>Required reviews flagged</span><small>Five additional cases also went to review</small></div>
+        </div>
+        <p class="notes">Results are from a held-out synthetic test set. The score for correct targets required parseable JSON. The tuned model also selected two incorrect destinations and missed one required review on a separate eight-case challenge set.</p>
+        <div class="actions">
+          <a class="button" href="dsc670-advanced-uses-of-generative-ai/evidence/milestone-4-presentation.pdf">View presentation and app screenshots</a>
+          <a href="dsc670-advanced-uses-of-generative-ai/index.html">Read the technical case study</a>
+        </div>
+      </article>
+      <h3 class="collection">Additional portfolio projects</h3>
+      <ul class="projects">
+        <li><span>DSC520</span>Comparing Linear Regression Models for Housing Prices</li>
+        <li><span>DSC520</span>Bias and Ethics in Healthcare Research: The Tuskegee Syphilis Study</li>
+        <li><span>DSC530</span>Factors Influencing Healthcare Costs</li>
+        <li><span>DSC540</span>County-Level Health Data Preparation</li>
+        <li><span>DSC550</span>Machine Learning with Diabetes Encounter Data</li>
+        <li><span>DSC630</span>Stroke Risk Prediction</li>
+        <li><span>DSC640</span>Visualizing Childcare Affordability</li>
+        <li><span>DSC680</span>Hospital Readmission Penalty Risk</li>
+        <li><span>DSC680</span>Bike Demand Forecasting for Operational Planning</li>
+      </ul>
+    </section>
+    <section class="contact" id="contact" aria-labelledby="contact-heading">
+      <div class="wrap">
+        <h2 id="contact-heading">Contact</h2>
+        <p>I’m interested in connecting about healthcare interoperability, applied data science, and engineering leadership.</p>
+        <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio">Shelia Howard on GitHub</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+source_field,datatype,description,example_value,expected_target,human_review_expected
+patientDOB,date,Patient date of birth,1988-04-11,date_of_birth,NO
+member_birth_date,date,Member birth date,1975-09-30,date_of_birth,NO
+birth_dt,date,Date member was born,2001-01-05,date_of_birth,NO
+mem_num,string,Unique health plan member identifier,M00044321,member_id,NO
+subscriber_id,string,Identifier assigned to member/subscriber,S893440,member_id,NO
+fname,string,Member first or given name,Jordan,first_name,NO
+given_name,string,Patient given name,Alex,first_name,NO
+mname,string,Member middle name,Lee,middle_name,NO
+surname,string,Patient family name,Howard,last_name,NO
+lname,string,Member last name,Garcia,last_name,NO
+gender_cd,string,Administrative sex code,F,sex,NO
+sex_at_registration,string,Administrative sex captured at registration,M,sex,NO
+addr1,string,Primary street address,124 Main St,address_line_1,NO
+street_address,string,First address line,88 Oak Ave,address_line_1,NO
+addr2,string,"Apartment, suite, or secondary address information",Apt 4B,address_line_2,NO
+municipality,string,City of residence,Nashville,city,NO
+member_city,string,Member city,Murfreesboro,city,NO
+state_cd,string,Two-character state abbreviation,TN,state,NO
+zip5,string,Five-digit postal code,37130,postal_code,NO
+postal,string,Postal or ZIP code,37209,postal_code,NO
+home_phone,string,Primary home telephone number,6155550100,phone_number,NO
+mobile,string,Mobile contact number,6155550133,phone_number,NO
+email,string,Primary electronic mail address,member@example.org,email_address,NO
+email_addr,string,Member email address,sample@example.org,email_address,NO
+id,string,Unique identifier,12345,REVIEW,YES
+name,string,Full legal name in one field,Jordan Lee Howard,REVIEW,YES
+contact,string,Preferred contact value; type not supplied,6155550199,REVIEW,YES
+address,string,Complete mailing address in one field,"124 Main St, Nashville, TN 37209",REVIEW,YES
+code,string,Member demographic code,F,REVIEW,YES
+dob_or_age,string,Birth date or age depending on source system,45,REVIEW,YES

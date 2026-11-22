@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthcare Data Mapping Assistant | Shelia Howard</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="top"><div class="wrap bar"><a href="../index.html#featured">Back to portfolio</a></div></header>
+  <main class="wrap study">
+<h1 id="healthcare-data-mapping-assistant">Healthcare Data Mapping
+Assistant</h1>
+<p><strong>Shelia Howard · DSC670 Advanced Uses of Generative AI ·
+Bellevue University</strong></p>
+<p>I built a Streamlit prototype to help healthcare data analysts review
+how incoming demographic fields map to a shared schema. The prototype
+accepts a source field name, datatype, description, and optional
+synthetic example value. It proposes one of 13 approved destinations or
+returns <code>REVIEW</code>, with a rationale and a human-review flag.
+An analyst can accept, revise, reject, or hold a recommendation.</p>
+<p><a href="evidence/milestone-4-presentation.pdf">View the presentation
+and application screenshots</a></p>
+<h2 id="problem-and-scope">Problem and scope</h2>
+<p>A source field such as <code>patientDOB</code> can map directly to
+<code>date_of_birth</code>. A field containing a person's full name is
+different because the target schema stores given and family names
+separately. The analyst needs to determine how to split the field before
+it can be mapped. The project focuses on this distinction within patient
+and member demographics, including identifiers, names, dates of birth,
+administrative sex, addresses, and contact information.</p>
+<h2 id="data-and-methods">Data and methods</h2>
+<ol type="1">
+<li><strong>Prompt design.</strong> I authored a 30-row synthetic
+metadata dataset and compared six GPT-4o mini prompts on the same six
+cases. These included three direct mappings and three ambiguous cases.
+Adding an explicit review option raised target accuracy from 3/6 with
+the controlled-schema prompt to 5/6 with the explicit review prompt. The
+six-case exercise informed the schema and response contract.</li>
+<li><strong>Fine-tuning.</strong> I used Hugging Face Transformers to
+fully fine-tune Qwen2.5-0.5B-Instruct in Colab. The notebook generates
+288 synthetic examples, with 192 for training, 48 for validation, and 48
+for testing. I assigned related wording variants to the same split by
+grouping them into authored semantic families. I evaluated the original
+and fine-tuned versions of the same model on the same held-out cases and
+examined a separate eight-case challenge suite.</li>
+<li><strong>Application.</strong> I integrated the exported checkpoint
+into a Streamlit prototype. The app checks the approved target
+vocabulary, required JSON keys, boolean review flag, and rationale
+before showing a result. The interface records the analyst's decision
+separately from the model recommendation.</li>
+</ol>
+<h2 id="results-on-the-48-case-held-out-test-set">Results on the 48-case
+held-out test set</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th style="text-align: right;">Original Qwen</th>
+<th style="text-align: right;">Fine-tuned Qwen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Strictly parsed target accuracy</td>
+<td style="text-align: right;">4/48 (8.33%)</td>
+<td style="text-align: right;">41/48 (85.42%)</td>
+</tr>
+<tr class="even">
+<td>Complete JSON contract</td>
+<td style="text-align: right;">7/48 (14.58%)</td>
+<td style="text-align: right;">48/48 (100%)</td>
+</tr>
+<tr class="odd">
+<td>Review recall</td>
+<td style="text-align: right;">0/9 (0%)</td>
+<td style="text-align: right;">9/9 (100%)</td>
+</tr>
+<tr class="even">
+<td>Review precision</td>
+<td style="text-align: right;">Undefined</td>
+<td style="text-align: right;">9/14 (64.29%)</td>
+</tr>
+</tbody>
+</table>
+<p>Strictly parsed target accuracy counts a correct approved target or
+<code>REVIEW</code> only when the output parses as JSON. The original
+model produced no review predictions, so its review precision is
+undefined. The fine-tuned model sent five clear cases to review and
+chose two wrong destinations. It also missed one required review in the
+separate challenge suite. The results met the JSON and review-recall
+thresholds on the main test, while target accuracy and review precision
+fell short of the notebook's acceptance criteria.</p>
+<p>The final application notebook records two live checkpoint checks.
+<code>patientDOB</code> returned <code>date_of_birth</code>, and
+<code>full_name</code> returned <code>REVIEW</code>. Both passed
+validation. Four intentionally invalid response examples in the same
+notebook were routed to review by the response guard.</p>
+<h2 id="evidence-and-reproducibility">Evidence and reproducibility</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Artifact</th>
+<th>What to inspect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="evidence/milestone-1-proposal.pdf">Project
+proposal</a></td>
+<td>Problem definition, initial scope, and evaluation plan</td>
+</tr>
+<tr class="even">
+<td><a href="evidence/milestone-2-prompt-experiments.pdf">Prompt
+experiment paper</a></td>
+<td>Prompt design and results</td>
+</tr>
+<tr class="odd">
+<td><a href="evidence/milestone-2-prompt-experiments.ipynb">Prompt
+experiment notebook</a> and <a
+href="evidence/healthcare_mapping_prompt_experiments.csv">synthetic
+CSV</a></td>
+<td>Six prompt variants, test cases, and saved outputs</td>
+</tr>
+<tr class="even">
+<td><a href="evidence/milestone-3-fine-tuning.ipynb">Fine-tuning
+notebook</a></td>
+<td>Sections 4–5 for dataset construction and split checks, and Sections
+12–14 for results and error analysis</td>
+</tr>
+<tr class="odd">
+<td><a href="evidence/milestone-4-app-verification.ipynb">Application
+verification notebook</a> and <a
+href="evidence/milestone-4-presentation.pdf">presentation</a></td>
+<td>Response validation, recorded live inference, and analyst workflow
+screenshots</td>
+</tr>
+</tbody>
+</table>
+<p>The notebooks contain saved outputs. To rerun the prompt study, place
+its notebook beside the CSV, use a Python environment with pandas and
+the OpenAI SDK, and supply <code>OPENAI_API_KEY</code> through the
+environment. API access and charges can apply. To reproduce the tuning
+run, use a GPU-backed Colab runtime and follow Sections 1–14 in order.
+The first section installs the recorded Transformers and Accelerate
+versions, and the notebook generates its own training, validation, and
+test inputs. The original tuning run used a Tesla T4.</p>
+<p>Running the final application requires the original Streamlit project
+files (including <code>app.py</code>, <code>mapping.py</code>, and
+<code>demo_cases.json</code>) and the exported model and tokenizer.
+Place the checkpoint in <code>final_model/</code> or use
+<code>MAPPING_MODEL_DIR</code> for the notebook, then run the notebook
+from the application repository or its immediate notebooks folder. Run
+<code>streamlit run app.py</code> from the application directory to open
+the interface. This portfolio copy includes the saved evidence. The app
+source and weights are separate dependencies.</p>
+<h2 id="limitations-and-responsible-use">Limitations and responsible
+use</h2>
+<p>All evaluation and demo data are synthetic. The custom target schema
+covers a limited set of demographic fields. Performance may change with
+terminology, field conventions, or ambiguous examples from other
+organizations. The strongest result was reliable JSON on the held-out
+synthetic test set. The mapping errors still show why an analyst should
+check the recommendation before using it in a data pipeline. I would
+next test field metadata from an independently authored benchmark and
+examine missed reviews and incorrect mappings by source-field type.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Bahree, A. (2024). <em>Generative AI in action</em>. Manning
+Publications.</li>
+<li>Qwen Team. (2024). <em>Qwen2.5-0.5B-Instruct</em> [Model card].
+Hugging Face. <a
+href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct">https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct</a></li>
+<li>Hugging Face. (n.d.). <em>Trainer</em> (Transformers version
+4.57.1). <a
+href="https://huggingface.co/docs/transformers/v4.57.1/en/main_classes/trainer">https://huggingface.co/docs/transformers/v4.57.1/en/main_classes/trainer</a></li>
+</ul>
+  </main>
+</body>
+</html>
