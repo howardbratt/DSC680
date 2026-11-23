@@ -5,62 +5,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Shelia Howard’s data science portfolio, featuring applied machine learning and healthcare interoperability.">
   <title>Shelia Howard | Data Science Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #1d2538;
+  --muted: #4d566b;
+  --accent: #48317f;
+  --paper: #faf9fc;
+  --line: #dfd9eb;
+  --tint: #f1ecfa;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 1rem; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font: 1rem/1.65 system-ui, sans-serif;
+}
+.wrap { width: min(70rem, calc(100% - 3rem)); margin-inline: auto; }
+.skip { position: absolute; left: 1rem; top: -5rem; background: white; padding: .6rem; }
+.skip:focus { top: 1rem; }
+:focus-visible { outline: 3px solid #9b5700; outline-offset: 4px; }
+.top { border-bottom: 1px solid var(--line); background: white; }
+.bar, nav, .actions { display: flex; align-items: center; flex-wrap: wrap; gap: .85rem 1.5rem; }
+.bar { justify-content: space-between; padding-block: 1.05rem; }
+a { color: var(--accent); text-underline-offset: .2em; }
+.identity { color: var(--ink); font-weight: 750; text-decoration: none; }
+nav a { font-weight: 600; }
+.intro { background: var(--tint); padding: clamp(3rem, 8vw, 7rem) 0; }
+.eyebrow { color: var(--accent); font-weight: 750; font-size: .8rem; letter-spacing: .085em; text-transform: uppercase; margin: 0 0 .6rem; }
+h1, h2, h3 { font-family: Georgia, serif; line-height: 1.1; margin: 0; }
+h1 { font-size: clamp(2.6rem, 7vw, 5.3rem); max-width: 13ch; letter-spacing: -.035em; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.55rem, 3.8vw, 2.45rem); }
+.lead { font-size: 1.15rem; max-width: 58ch; margin: 1.25rem 0 1.5rem; }
+.button { display: inline-block; padding: .65rem 1rem; border-radius: .35rem; background: var(--accent); color: white; font-weight: 650; text-decoration: none; }
+.button:hover { background: #34235d; }
+.work { padding-block: 3rem 3.5rem; }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.project {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 3vw, 1.65rem);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--accent);
+  border-radius: .55rem;
+  background: white;
+}
+.project h3 { font-size: clamp(1.35rem, 2.5vw, 1.85rem); }
+.project p:not(.eyebrow) { margin: .8rem 0 0; }
+.project .actions {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font-weight: 650;
+  gap: .55rem 1rem;
+}
+.contact { padding-block: 2.6rem 3.2rem; background: var(--tint); }
+.contact p, .work > p { max-width: 70ch; }
+@media (max-width: 46rem) {
+  .wrap { width: calc(100% - 2rem); }
+  .project-grid { grid-template-columns: minmax(0, 1fr); }
+}
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="top">
     <div class="wrap bar">
-      <a class="identity" href="#main">Shelia Howard</a>
+      <a class="identity" href="#about">Shelia Howard</a>
       <nav aria-label="Main navigation">
-        <a href="#about">About</a><a href="#projects">Work / Projects</a><a href="#contact">Contact</a>
+        <a href="#about">About</a>
+        <a href="#projects">Work / Projects</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/howardbratt/DSC680">GitHub repository</a>
       </nav>
     </div>
   </header>
-  <main id="main">
+  <main id="main" tabindex="-1">
     <section class="intro" id="about" aria-labelledby="about-heading">
       <div class="wrap">
-        <p class="eyebrow">Data science portfolio</p>
-        <h1 id="about-heading">Data science for healthcare operations</h1>
-        <p class="lead">I’m Shelia Howard, a master’s student in data science with a background in healthcare software engineering and interoperability. I’m interested in how teams can use data and machine learning to make decisions they can review and explain.</p>
-        <a class="button" href="#featured">Explore the featured project</a>
+        <p class="eyebrow">About</p>
+        <h1 id="about-heading">Shelia Howard</h1>
+        <p class="lead">I’m a Master of Data Science student at Bellevue University with a background in healthcare software engineering, data exchange, and interoperability.</p>
+        <p class="lead">My work focuses on how teams can use data to make decisions they can review and explain. These projects show my approach to preparing data, comparing models, checking assumptions, and communicating findings to technical and operational audiences.</p>
+        <a class="button" href="#projects">Explore my projects</a>
       </div>
     </section>
     <section class="wrap work" id="projects" aria-labelledby="projects-heading">
       <h2 id="projects-heading">Work / Projects</h2>
-      <article class="feature" id="featured" aria-labelledby="feature-heading">
-        <p class="eyebrow">Featured project · Advanced Uses of Generative AI</p>
-        <h3 id="feature-heading">Healthcare Data Mapping Assistant</h3>
-        <p>I built a Streamlit prototype that recommends where incoming demographic fields belong in a shared healthcare schema. It proposes a target for clear cases and sends ambiguous cases to an analyst. For example, it mapped a birth date to <code>date_of_birth</code> and flagged a combined full-name field for review.</p>
-        <div class="metrics">
-          <div><strong>41/48</strong><span>Correct targets after fine-tuning</span><small>Up from 4/48 with the original model</small></div>
-          <div><strong>48/48</strong><span>Responses met the JSON contract</span><small>Up from 7/48 with the original model</small></div>
-          <div><strong>9/9</strong><span>Required reviews flagged</span><small>Five additional cases also went to review</small></div>
-        </div>
-        <p class="notes">Results are from a held-out synthetic test set. The score for correct targets required parseable JSON. The tuned model also selected two incorrect destinations and missed one required review on a separate eight-case challenge set.</p>
-        <div class="actions">
-          <a class="button" href="dsc670-advanced-uses-of-generative-ai/evidence/milestone-4-presentation.pdf">View presentation and app screenshots</a>
-          <a href="dsc670-advanced-uses-of-generative-ai/index.html">Read the technical case study</a>
-        </div>
-      </article>
-      <h3 class="collection">Additional portfolio projects</h3>
-      <ul class="projects">
-        <li><span>DSC520</span>Comparing Linear Regression Models for Housing Prices</li>
-        <li><span>DSC520</span>Bias and Ethics in Healthcare Research: The Tuskegee Syphilis Study</li>
-        <li><span>DSC530</span>Factors Influencing Healthcare Costs</li>
-        <li><span>DSC540</span>County-Level Health Data Preparation</li>
-        <li><span>DSC550</span>Machine Learning with Diabetes Encounter Data</li>
-        <li><span>DSC630</span>Stroke Risk Prediction</li>
-        <li><span>DSC640</span>Visualizing Childcare Affordability</li>
-        <li><span>DSC680</span>Hospital Readmission Penalty Risk</li>
-        <li><span>DSC680</span>Bike Demand Forecasting for Operational Planning</li>
-      </ul>
+      <p>Ten projects from my master’s program cover statistical analysis, research ethics, data preparation, machine learning, visualization, and generative AI. Each project links to its source files and supporting materials on GitHub.</p>
+      <div class="project-grid">
+        <article class="project" aria-labelledby="project-1">
+          <p class="eyebrow">DSC520 · Statistics for Data Science</p>
+          <h3 id="project-1">Comparing Linear Regression Models for Housing Prices</h3>
+          <p>I compared nested linear regression models for housing prices to evaluate whether adding predictors improved model fit. The analysis documents data preparation, uses residual diagnostics to assess model assumptions, and applies a nested-model test to evaluate the added predictors.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC520/Linear%20Regression/housing-price-regression.Rmd" aria-label="R Markdown analysis for Comparing Linear Regression Models for Housing Prices">R Markdown analysis</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC520/Linear%20Regression" aria-label="Project folder for Comparing Linear Regression Models for Housing Prices">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-2">
+          <p class="eyebrow">DSC520 · Statistics for Data Science</p>
+          <h3 id="project-2">Bias and Ethics in Healthcare Research: The Tuskegee Syphilis Study</h3>
+          <p>I examined how participant selection in the Tuskegee Syphilis Study limited the generalizability of its findings. The paper uses a comparison table to organize the analysis and considers the consequences of decisions about informed consent and access to treatment.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC520/Understanding%20Biases%20in%20Statistics/Reports/Bias%20and%20Ethics%20in%20Healthcare%20Research_The%20Tuskegee%20Syphilis%20Study.pdf" aria-label="Research paper for Bias and Ethics in Healthcare Research: The Tuskegee Syphilis Study">Research paper</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC520/Understanding%20Biases%20in%20Statistics" aria-label="Project folder for Bias and Ethics in Healthcare Research: The Tuskegee Syphilis Study">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-3">
+          <p class="eyebrow">DSC530 · Data Exploration and Analysis</p>
+          <h3 id="project-3">Factors Influencing Healthcare Costs</h3>
+          <p>I used the Medical Cost Personal Dataset to examine how demographic and behavioral characteristics relate to medical insurance charges. The paper and accompanying notebook use statistical and machine learning methods to identify variables associated with charges and evaluate how well those variables predict spending.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC530/Code/Factors%20Influencing%20Healthcare%20Costs.ipynb" aria-label="Analysis notebook for Factors Influencing Healthcare Costs">Analysis notebook</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC530" aria-label="Project folder for Factors Influencing Healthcare Costs">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-4">
+          <p class="eyebrow">DSC540 · Data Preparation</p>
+          <h3 id="project-4">County-Level Health Data Preparation</h3>
+          <p>I brought three cleaned county-level health datasets into SQLite, stored each source in its own table, and joined them using SQL. The final notebook carries forward the cleaned records from earlier milestones and produces five visualizations from the combined data, documenting the process from database setup through visualization.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC540/Code/shelia_howard_dsc540_term_project_milestone_5.ipynb" aria-label="Final notebook for County-Level Health Data Preparation">Final notebook</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC540" aria-label="Project folder for County-Level Health Data Preparation">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-5">
+          <p class="eyebrow">DSC550 · Data Mining</p>
+          <h3 id="project-5">Machine Learning with Diabetes Encounter Data</h3>
+          <p>I used the UCI Diabetes 130-US Hospitals dataset, which covers encounters from 1999 through 2008, to study 30-day readmission among patients with diabetes. I derived a binary outcome from the original readmission field and examined potential differences in model performance across demographic groups.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC550/Code/shelia_howard_dsc550_final_project_submission.ipynb" aria-label="Modeling notebook for Machine Learning with Diabetes Encounter Data">Modeling notebook</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC550" aria-label="Project folder for Machine Learning with Diabetes Encounter Data">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-6">
+          <p class="eyebrow">DSC630 · Predictive Analysis</p>
+          <h3 id="project-6">Stroke Risk Prediction</h3>
+          <p>I used 5,110 records from Fedesoriano’s Stroke Prediction Dataset to evaluate whether demographic, medical, and lifestyle variables could help prioritize preventive outreach. This course proof of concept used a binary recorded-stroke outcome to explore how a model might support outreach prioritization.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC630/Code/Shelia_Howard_DSC630_Final_Project_Code.ipynb" aria-label="Modeling notebook for Stroke Risk Prediction">Modeling notebook</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC630" aria-label="Project folder for Stroke Risk Prediction">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-7">
+          <p class="eyebrow">DSC640 · Data Presentation &amp; Visualization</p>
+          <h3 id="project-7">Visualizing Childcare Affordability</h3>
+          <p>I used the National Database of Childcare Prices to examine childcare affordability as a workforce development concern. The final notebook documents data preparation and assumptions and includes a five-slide executive presentation, a county screening dashboard, a one-page public infographic, and the final paper.</p>
+          <p>Each format presents the same evidence with a level of detail suited to its audience. The analysis uses affordability and workforce measures to screen counties for a proposed local pilot.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC640/Code/Shelia_Howard_DSC640_Term_Project_Milestone_5.ipynb" aria-label="Analysis and visualizations for Visualizing Childcare Affordability">Analysis and visualizations</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC640" aria-label="Project folder for Visualizing Childcare Affordability">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-8">
+          <p class="eyebrow">DSC670 · Advanced Uses of Generative AI</p>
+          <h3 id="project-8">Healthcare Data Mapping Assistant</h3>
+          <p>I built a Streamlit prototype to recommend mappings from incoming healthcare fields to an approved schema of 13 demographic fields. An analyst can enter a name, datatype, description, and an optional sample value. The app returns a recommendation and rationale or routes the field for analyst review. For example, it mapped a birth date to the approved date-of-birth field and flagged a combined full name for review.</p>
+          <p>After fine-tuning on synthetic examples, the model returned the correct target or review decision in 41 of 48 held-out cases and produced valid JSON in all 48. It missed one required review on a separate eight-case challenge set. The app records the analyst’s decision separately.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC670/Code/Healthcare_Data_Mapping_Assistant_Milestone_4.ipynb" aria-label="App verification notebook for Healthcare Data Mapping Assistant">App verification notebook</a> <a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC670/README.md" aria-label="App setup and downloads for Healthcare Data Mapping Assistant">App setup and downloads</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC670" aria-label="Project folder for Healthcare Data Mapping Assistant">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-9">
+          <p class="eyebrow">DSC680 · Applied Data Science · Project 1</p>
+          <h3 id="project-9">Hospital Readmission Penalty Risk</h3>
+          <p>I analyzed 11,720 hospital and condition records from the FY 2026 CMS Hospital Readmissions Reduction Program to assess whether condition, state, and discharge volume could help flag records for further review. I compared logistic regression and random forest, kept each hospital’s records together during cross-validation, and excluded variables that could reveal the outcome.</p>
+          <p>Random forest achieved a ROC-AUC of 0.663. At its default threshold, logistic regression identified about 68% of records with an excess readmission ratio above 1.0. These results give hospital quality teams a starting point for deciding where to review readmission performance.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC680/Hospital%20Readmission%20Penalty%20Risk/Code/Shelia_Howard_DSC680_Final_Project_Milestone_3.ipynb" aria-label="Final notebook for Hospital Readmission Penalty Risk">Final notebook</a> <a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC680/Hospital%20Readmission%20Penalty%20Risk/Reports/Shelia%20Howard%20DSC680%20Final%20Project%20White%20Paper.pdf" aria-label="White paper for Hospital Readmission Penalty Risk">White paper</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC680/Hospital%20Readmission%20Penalty%20Risk" aria-label="Project folder for Hospital Readmission Penalty Risk">Project folder</a></div>
+        </article>
+        <article class="project" aria-labelledby="project-10">
+          <p class="eyebrow">DSC680 · Applied Data Science · Project 2</p>
+          <h3 id="project-10">Bike Demand Forecasting for Operational Planning</h3>
+          <p>I analyzed 17,379 hourly Capital Bikeshare records from 2011 and 2012 to evaluate forecasts for staffing and bike reserve planning. I compared ridge regression and random forest with a baseline based on typical rentals by hour and weekday. Models were trained and validated on earlier dates and tested on a later period.</p>
+          <p>Adding observed weather reduced mean absolute error by 5.4% for ridge regression and 17.7% for random forest. At 8 a.m., the calendar-only ridge model underestimated demand in 90 of 145 test hours, with an average shortfall of about 292 rentals across those misses. I recommended reviewing the 8 a.m. period and testing on recent data with weather forecasts available at planning time before changing staffing or bike allocations.</p>
+          <div class="actions"><a href="https://github.com/howardbratt/DSC680/blob/main/Portfolio/DSC680/Bike%20Demand%20Forecasting%20for%20Operational%20Planning/Code/Shelia_Howard_DSC680_Project2_Milestone3.ipynb" aria-label="Final notebook for Bike Demand Forecasting for Operational Planning">Final notebook</a> <a href="https://github.com/howardbratt/DSC680/blob/main/Project_2_Milestone_3/Shelia%20Howard%20DSC680%20Project%202%20Milestone%203%20White%20Paper.pdf" aria-label="White paper for Bike Demand Forecasting for Operational Planning">White paper</a> <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio/DSC680/Bike%20Demand%20Forecasting%20for%20Operational%20Planning" aria-label="Project folder for Bike Demand Forecasting for Operational Planning">Project folder</a></div>
+        </article>
+      </div>
+      <p><a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio">Browse all portfolio folders on GitHub</a></p>
     </section>
     <section class="contact" id="contact" aria-labelledby="contact-heading">
       <div class="wrap">
         <h2 id="contact-heading">Contact</h2>
-        <p>I’m interested in connecting about healthcare interoperability, applied data science, and engineering leadership.</p>
-        <a href="https://github.com/howardbratt/DSC680/tree/main/Portfolio">Shelia Howard on GitHub</a>
+        <p>I welcome conversations about applied data science, healthcare interoperability, and software engineering leadership. You can find me on GitHub as <strong>howardbratt</strong>.</p>
+        <a href="https://github.com/howardbratt">View my GitHub profile</a>
       </div>
     </section>
   </main>
